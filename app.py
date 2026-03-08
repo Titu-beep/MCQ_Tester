@@ -340,10 +340,28 @@ else:
         use_container_width=True
     )
 
-    if st.button("🔄 Try Again"):
-        st.session_state.quiz_started = False
-        st.session_state.user_answers = {}
-        st.rerun()
+    col_retry, col_new, col_back_to_quiz = st.columns(3)
+    
+    with col_retry:
+        if st.button("🔄 Restart Same Test", use_container_width=True):
+            st.session_state.user_answers = {}
+            st.session_state.current_q = 0
+            st.session_state.start_time = time.time()
+            st.session_state.end_time = None
+            st.rerun()
+            
+    with col_new:
+        if st.button("📤 New Test", use_container_width=True, type="primary"):
+            st.session_state.quiz_started = False
+            st.session_state.user_answers = {}
+            st.rerun()
+
+    with col_back_to_quiz:
+        if st.button("⬅️ Back to Quiz", use_container_width=True):
+            st.session_state.current_q = len(st.session_state.questions) - 1
+            st.session_state.end_time = None
+            st.rerun()
+            
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Detailed Review Table
